@@ -9,6 +9,22 @@ resource "aws_instance" "main-ec2" {
   iam_instance_profile = "${var.iam_instance_profile}"
   subnet_id            = "${var.subnet_id}"
   tags = {
-    Name = "RedHat-WebServer"
+    Name = "WebServer"
+  }
+  connection  {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("C:\\Users\\ajagdale\\Documents\\EC2 Key")
+    host        = self.public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum update -y",
+      "sudo yum install httpd -y",
+      "sudo aws s3 cp s3://s3-aniruddha/index.html /var/www/html/",
+      "sudo service httpd start",
+      "sudo chkconfig httpd on"
+    ]
   }
 }
