@@ -11,8 +11,8 @@ variable "EC2_Key" {
   default = "EC2 Key"
 }
 variable "subnet_id" {
-  default=""
-  
+  default = ""
+
 }
 
 
